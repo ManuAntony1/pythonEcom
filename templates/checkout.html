@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #a04545;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        text-align: center;
+      }
+      li {
+        margin: 10px auto;
+        width: 300px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h3 {
+        text-align: center;
+      }
+      footer {
+        text-align: center;
+        margin-top: 20px;
+      }
+      a {
+        color: #fff;
+        text-decoration: none;
+        background-color: #a04545;
+        padding: 10px 20px;
+        border-radius: 5px;
+      }
+      a:hover {
+        background-color: #8b3939;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Checkout</h1>
+    </header>
+
+    <ul>
+      {% for product in cart %}
+      <li>{{ product.name }} - ${{ "%.2f"|format(product.price) }}</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Total: ${{ "%.2f"|format(total) }}</h3>
+
+    <footer>
+      <a href="{{ url_for('product.index') }}">Back to Products</a>
+    </footer>
+  </body>
+</html>

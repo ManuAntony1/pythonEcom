@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #a04545;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        text-align: center;
+      }
+      li {
+        margin: 10px auto;
+        width: 300px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .buttons {
+        text-align: center;
+        margin-top: 20px;
+      }
+      a,
+      button {
+        color: #fff;
+        text-decoration: none;
+        background-color: #a04545;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+      }
+      button:hover,
+      a:hover {
+        background-color: #8b3939;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Your Cart</h1>
+    </header>
+
+    <ul>
+      {% for item in cart %}
+      <li>{{ item.name }} - ${{ "%.2f"|format(item.price) }}</li>
+      {% endfor %}
+    </ul>
+
+    {% if cart %}
+    <div class="buttons">
+      <form method="POST" action="{{ url_for('product.clear_cart') }}">
+        <button type="submit">Clear Cart</button>
+      </form>
+      <a href="{{ url_for('product.checkout') }}">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <p style="text-align: center">Your cart is empty!</p>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 20px">
+      <a href="{{ url_for('product.index') }}">Back to Products</a>
+    </div>
+  </body>
+</html>

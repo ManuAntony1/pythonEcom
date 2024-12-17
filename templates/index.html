@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+      header {
+        background-color: #a04545;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      header a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      h2 {
+        text-align: center;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      li {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 10px;
+        padding: 15px;
+        text-align: center;
+        width: 200px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      a {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #a04545;
+        padding: 5px 10px;
+        border-radius: 4px;
+      }
+      a:hover {
+        background-color: #8b3939;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetchProducts();
+      });
+
+      async function fetchProducts() {
+        try {
+          const response = await fetch("/product/api/products"); // API URL
+          const products = await response.json();
+
+          const productList = document.getElementById("product-list");
+          productList.innerHTML = ""; // Clear existing content
+
+          products.forEach((product) => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `
+        <h3>${product.name}</h3>
+        <p>$${product.price.toFixed(2)}</p>
+        <a href="/product/add_to_cart/${product.id}">Add to Cart</a>
+      `;
+            productList.appendChild(listItem);
+          });
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to Apple Store</h1>
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </header>
+
+    <h2>Products</h2>
+    <ul id="product-list">
+      {% for product in products %}
+      <li>
+        <h3>{{ product.name }}</h3>
+        <p>${{ "%.2f"|format(product.price) }}</p>
+        <a href="{{ url_for('product.add_to_cart', product_id=product.id) }}"
+          >Add to Cart</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+
+    <footer style="text-align: center">
+      <a href="{{ url_for('product.cart') }}">View Cart</a>
+    </footer>
+  </body>
+</html>
